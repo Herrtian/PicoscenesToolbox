@@ -276,6 +276,7 @@ cdef class Picoscenes:
         self.file = file
         self.if_report = if_report
         self.raw = list()
+        self.read()
 
     def __init__(self, file, if_report=True):
         pass
@@ -350,7 +351,7 @@ cdef class Picoscenes:
 cdef inline uint32_t cu32l(uint8_t a, uint8_t b, uint8_t c, uint8_t d):
     return a | (b << 8) | (c << 16) | (d << 24)
 
-
+#  This has been not used yet
 cdef class PicoFrames:
     cdef public str file
     cdef public list raw
