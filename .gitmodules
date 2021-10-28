@@ -1,0 +1,3 @@
+[submodule "rxs_parsing_core"]
+	path = rxs_parsing_core
+	url = https://gitlab.com/wifisensing/rxs_parsing_core.git
