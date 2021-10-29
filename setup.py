@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 import os
-import sys
 
 import numpy
 from Cython.Build import cythonize
@@ -59,9 +58,3 @@ setup(
     cmdclass={'build_ext': Build},
 )
 
-#
-# ext = [Extension("picoscenes",
-#                  sources=["picoscenes.pyx"],
-#                  include_dirs=["."])]
-#
-# setup(ext_modules=cythonize(ext, language_level=3))

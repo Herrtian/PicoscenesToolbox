@@ -1,8 +1,11 @@
 *.csi
+!rx_by_usrpN210.csi
+picoscenes.cpp
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
+
 
 # C extensions
 *.so

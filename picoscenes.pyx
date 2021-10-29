@@ -1,6 +1,5 @@
 # distutils: language = c++
 import struct
-from typing import Tuple, Optional, Type
 
 from libc.stdio cimport (fopen, fread, fclose, fseek, ftell, printf, FILE,
 SEEK_END, SEEK_SET, SEEK_CUR)
@@ -12,12 +11,6 @@ from libcpp.vector cimport vector
 from libcpp.complex cimport complex as ccomplex
 
 import numpy as np
-
-__doc__ = """
-    i dont know 
-"""
-
-from numpy.distutils.misc_util import get_frame
 
 
 cdef extern from "<optional>" namespace "std" nogil:
@@ -380,7 +373,7 @@ cdef class PicoFrames:
                 print("Reached end of file.")
                 break
             # picoframe = PicoFrame()
-            frame = ModularPicoScenesRxFrame.fromBuffer(<unsigned char *>frame_bytes, frame_length - 4, True)
+            frame = ModularPicoScenesRxFrame.fromBuffer(<unsigned char *> frame_bytes, frame_length - 4, True)
             print(frame.has_value())
 
             self.raw.append(parse(&frame))
