@@ -74,7 +74,7 @@ python main.py
 
 If you run the programm successfully, you will get the result like this :
 
-![](/home/tt/PycharmProjects/PicoToolBox/docs/Figure_1.png)
+![](docs/Figure_1.png)
 
 
 
