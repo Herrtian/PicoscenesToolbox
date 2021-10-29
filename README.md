@@ -1,7 +1,3 @@
----
-typora-root-url: docs
----
-
 # PicoscenesToolbox
 
 An official tool plugins for parsing **.csi** from picosecenes in Python.
@@ -66,7 +62,7 @@ plt.plot(SubcarrierIndex, Mag)
 plt.show()
 ```
 
-  **main.py** is included in the work dir.
+  **main.py** is included in the working dir.
 
   This programm shows the first frame of **rx_by_usrpN210.csi** ,and draws the picture whose x-ray stands for **SubcarrierIndex** and y-ray stands for **Phase** && **Magnitude**.
 
@@ -78,9 +74,9 @@ python main.py
 
 If you run the programm successfully, you will get the result like this :
 
-![](/Figure_1.png)
+![](/home/tt/PycharmProjects/PicoToolBox/docs/Figure_1.png)
 
- 
+
 
 ## Wiki && Docs
 
@@ -100,7 +96,7 @@ Welcome to give this programm a **star** or **fork**.
 
 * **[PicoScenes](https://ps.zpj.io/)**: A powerful Wi-Fi sensing platform middleware for a wide range of hardware.
   * This project was released by [Zhiping Jiang](https://zpj.io/bio/).
-* **csiread**: A fast channel state information parser for Intel, Atheros, Nexmon and ESP32 in Python.
+* [**csiread**](https://github.com/citysu/csiread): A fast channel state information parser for Intel, Atheros, Nexmon and ESP32 in Python.
   - This project released by [citysu/csiread](https://github.com/citysu/csiread) inspires PicoscenesToolbox.
 
 
