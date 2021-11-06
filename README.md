@@ -1,36 +1,48 @@
 # PicoscenesToolbox
 
-An official tool plugins for parsing **.csi** from picosecenes in Python.
+The official Python toolbox for parsing the PicoScenes **.csi** files.
 
-Python 3.8+ required.
+## Highlights
 
-Support only on Linux/MacOS
-
-- An LTS  toolbox for parsing .csi 
+- Support Linux and macOS
 - Easy to use 
-- Faster parsing than the implementation in Matlab 
-- Flexible scalability
+- Faster parsing than the MATLAB implementation
+- High scalability
+- The official toolbox for parsing .csi
 
 
 
 ## Install
 
-1. Use **Git** to clone source files.
+1. Git clone this repository with `--recursive` option.
 
 ```bash
 git clone https://github.com/Herrtian/PicoscenesToolbox.git --recursive
 ```
 
-2.  install dependency (make sure you have created a python virtual environment and enter the working dir ).
+2.  install python and dependency
+
+```bash
+sudo apt-get install python3
+sudo apt-get install pip3
+```
+
+* If you are **Chinese** user, you can set pip source to accelerate download speed.
+
+```bash
+pip3 config set global.index-url https：//pypi.tuna.tsinghua.edu.cn/simple/
+```
+
+* install dependency
 
  ```python
- pip install -r requirements.txt 
+ pip3 install -r requirements.txt 
  ```
 
 3. Build the program  
 
 ```bash
-python setup.py build_ext --inplace
+python3 setup.py build_ext --inplace
 ```
 
 
@@ -69,7 +81,7 @@ plt.show()
 ### run the file
 
 ```bash
-python main.py
+python3 main.py
 ```
 
 If you run the programm successfully, you will get the result like this :
