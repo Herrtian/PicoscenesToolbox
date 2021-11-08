@@ -208,7 +208,7 @@ Fragment = frames.raw[i].get("StandardHeader").get("Fragment")
 i = 0  # stands for the first frame of csi frames
 
 frames = Picoscenes("rx_by_usrpN210.csi")
-numTones = frames.raw[i].get("RxSBasic").get("timestamp")
+timestamp = frames.raw[i].get("RxSBasic").get("timestamp")
 
 ```
 
@@ -345,10 +345,10 @@ In order to **not** trouble you ,i will just list the meaningful Information of 
 ```python	
 i = 0  # stands for the first frame of csi frames
 
-frames = Picoscenes("rx_by_usrpN210.csi")
-if frames.raw[i].get("Txtrainfo").get("has_txpower"):
-	txpower = frames.raw[i].get("Txtrainfo").get("txpower")
-    # make sure the frame has_xxx attribute then assign the variable
+frames = Picoscenes("rx_by_qca9300.csi")
+txpower = frames.raw[i].get("TxExtraInfo").get("txpower")
+print(txpower)
+
 ```
 
 
@@ -381,8 +381,8 @@ if frames.raw[i].get("Txtrainfo").get("has_txpower"):
 ```python
 i = 0
 frames = Picoscenes("rx_by_usrpN210.csi")
-frame = frames.raw[i] # get the first frame numtones
-if frame_value.pilotCSISegment.has_value():
+frame = frames.raw[i]  
+if frame.get("PilotCSI"):
     numTones = frame.get("PilotCSI").get("numTones")
 ```
 
@@ -418,22 +418,45 @@ if frame_value.pilotCSISegment.has_value():
 ```python
 i = 0
 frames = Picoscenes("rx_by_usrpN210.csi")
-frame = frames.raw[i] # get the first frame numtones
-if frame_value.pilotCSISegment.has_value():
-    numTones =frame.get("LegacyCSI").get("numTones")
+frame = frames.raw[i]  
+if frame.get("LegacyCSI"):
+    numTones = frame.get("LegacyCSI").get("numTones")
 ```
 
 
 
 ### BasebandSignals(Optional[np.asarray])
 
+```python
+i = 0
+frames = Picoscenes("rx_by_usrpN210.csi")
+frame = frames.raw[i]  
+BasebandSignals = frame.get("BasebandSignals")
+```
+
 
 
 ### PreEQSymbols(Optional[np.asarray])
 
+```python
+i = 0
+frames = Picoscenes("rx_by_usrpN210.csi")
+frame = frames.raw[i]  
+BasebandSignals = frame.get("PreEQSymbols")
+```
+
 
 
 ### MPDU(uint8_t)
+
+```python
+i = 0
+frames = Picoscenes("rx_by_usrpN210.csi")
+frame = frames.raw[i]  # get the first frame numtones
+MPDU = frame.get("MPDU")
+```
+
+**If you have something dont know , you can check picoscenes.pyx or contact with me. **
 
 
 

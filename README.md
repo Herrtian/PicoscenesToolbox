@@ -23,14 +23,15 @@ git clone https://github.com/Herrtian/PicoscenesToolbox.git --recursive
 2.  install python and dependency
 
 ```bash
-sudo apt-get install python3
-sudo apt-get install pip3
+sudo apt update
+sudo apt install python3
+sudo apt install python3-pip
 ```
 
-* If you are **Chinese** user, you can set pip source to accelerate download speed.
+* If you are **Chinese** user, you can change pip source to accelerate download speed.
 
 ```bash
-pip3 config set global.index-url https：//pypi.tuna.tsinghua.edu.cn/simple/
+pip config set global.index-url https://mirrors.aliyun.com/pypi/simple/
 ```
 
 * install dependency
@@ -63,20 +64,19 @@ i = 0  # stands for the first frame of csi frames
 frames = Picoscenes("rx_by_usrpN210.csi")
 numTones = frames.raw[i].get("CSI").get("numTones")
 SubcarrierIndex = np.array(frames.raw[i].get("CSI").get("SubcarrierIndex"))
-Phase = np.array(frames.raw[i].get("CSI").get("Phase"))[:numTones]
 Mag = np.array(frames.raw[i].get("CSI").get("Mag"))[:numTones]
 
-plt.title("Phase && Magnitude Demo")
+plt.title(" Magnitude Demo")
 plt.xlabel("x axis subcarryindex ")
-plt.ylabel("y axis Phase && Magnitude")
-plt.plot(SubcarrierIndex, Phase)
+plt.ylabel("y axis Magnitude")
 plt.plot(SubcarrierIndex, Mag)
 plt.show()
+
 ```
 
   **main.py** is included in the working dir.
 
-  This programm shows the first frame of **rx_by_usrpN210.csi** ,and draws the picture whose x-ray stands for **SubcarrierIndex** and y-ray stands for **Phase** && **Magnitude**.
+  This programm shows the first frame of **rx_by_usrpN210.csi** ,and draws the picture whose x-ray stands for **SubcarrierIndex** and y-ray stands for **Magnitude**.
 
 ### run the file
 
