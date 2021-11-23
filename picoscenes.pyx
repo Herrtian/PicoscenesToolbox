@@ -150,7 +150,8 @@ cdef extern from "rxs_parsing_core/ModularPicoScenesFrame.hxx":
     cdef enum PicoScenesDeviceType:  # uint16_t
         QCA9300
         IWL5300
-        IWLMVM
+        IWLMVM_AX200
+        IWLMVM_AX210
         MAC80211Compatible
         USRP
         VirtualSDR
@@ -190,6 +191,7 @@ cdef extern from "rxs_parsing_core/ModularPicoScenesFrame.hxx":
     # CSISegment.hxx
     cdef cppclass CSI:
         PicoScenesDeviceType deviceType
+        uint8_t firmwareVersion
         PacketFormatEnum packetFormat
         ChannelBandwidthEnum cbw
         uint64_t carrierFreq
@@ -505,6 +507,7 @@ cdef parse_CSI(const CSI *m):
     return {
         "DeviceType": <uint16_t> m.deviceType,
         "PacketFormat": <int8_t> m.packetFormat,
+        "FirmwareVersion": <uint8_t> m.firmwareVersion,
         "CBW": <uint16_t> m.cbw,
         "CarrierFreq": m.carrierFreq,
         "SamplingRate": m.samplingRate,
