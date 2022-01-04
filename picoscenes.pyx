@@ -209,6 +209,22 @@ cdef extern from "rxs_parsing_core/ModularPicoScenesFrame.hxx":
     cdef cppclass CSISegment:
         const CSI & getCSI() const
 
+    # DPASRequestSegment.hxx
+    cdef packed struct DPASRequest:
+        uint8_t  requestMode
+        uint16_t batchId
+        uint16_t batchLength
+        uint16_t sequenceId
+        uint16_t intervalTime
+        uint16_t intervalStep
+        PicoScenesDeviceType deviceType
+        uint16_t deviceSubtype
+        uint64_t carrierFrequency
+        uint32_t samplingFrequency
+
+    cdef cppclass DPASRequestSegment:
+        DPASRequest  getRequest() const
+
     # MVMExtraSegment.hxx
     cdef cppclass IntelMVMParsedCSIHeader:
         uint32_t ftmClock
@@ -240,7 +256,6 @@ cdef extern from "rxs_parsing_core/ModularPicoScenesFrame.hxx":
     # PreEQSymbolsSegment.hxx
     cdef cppclass PreEQSymbolsSegment:
         const SignalMatrix[ccomplex[double]] & getPreEqSymbols() const
-
     # ModularPicoScenesFrame.hxx
     cdef cppclass ModularPicoScenesRxFrame:
         ieee80211_mac_frame_header standardHeader
@@ -250,6 +265,7 @@ cdef extern from "rxs_parsing_core/ModularPicoScenesFrame.hxx":
         optional[MVMExtraSegment] mvmExtraSegment
         optional[PicoScenesFrameHeader] PicoScenesHeader
         optional[ExtraInfoSegment] txExtraInfoSegment
+        optional[DPASRequestSegment] dpasRequestSegment
         optional[CSISegment] pilotCSISegment
         optional[CSISegment] legacyCSISegment
         optional[BasebandSignalSegment] basebandSignalSegment
@@ -531,6 +547,20 @@ cdef parse_IntelMVMParsedCSIHeader(const IntelMVMParsedCSIHeader *m):
         "RateNFlags": m.rate_n_flags,
     }
 
+cdef parse_DpasRequestSegment(const DPASRequest m):
+    return {
+        "requestMode": m.requestMode,
+        "batchId": m.batchId,
+        "batchLength": m.batchLength,
+        "sequenceId": m.sequenceId,
+        "intervalTime": m.intervalTime,
+        "intervalStep": m.intervalStep,
+        "deviceType": m.deviceType,
+        "deviceSubtype": m.deviceSubtype,
+        "carrierFrequency": m.carrierFrequency,
+        "samplingFrequency": m.samplingFrequency,
+    }
+
 cdef parse_PicoScenesFrameHeader(const PicoScenesFrameHeader *m):
     return {
         "MagicValue": m.magicValue,
@@ -570,6 +600,10 @@ cdef parse(optional[ModularPicoScenesRxFrame] *frame):
             data["BasebandSignals"] = parse_SignalMatrix(&frame_value.basebandSignalSegment.value().getSignalMatrix())
         if frame_value.preEQSymbolsSegment.has_value():
             data["PreEQSymbols"] = parse_SignalMatrix(&frame_value.preEQSymbolsSegment.value().getPreEqSymbols())
+        if frame_value.dpasRequestSegment.has_value():
+            data["DpasRequestSegment"] = parse_DpasRequestSegment(
+                frame_value.dpasRequestSegment.value().getRequest())
+
         data["MPDU"] = frame_value.mpdu
 
     # print(data)
