@@ -36,8 +36,8 @@ class Build(build_ext):
 
 
 pico_root = "./rxs_parsing_core"
-pico_generated = os.path.join(pico_root, 'interpolationAndCSDRemoval/generated')
-pico_include = os.path.join(pico_root, 'interpolationAndCSDRemoval')
+pico_generated = os.path.join(pico_root, 'preprocess/generated')
+pico_include = os.path.join(pico_root, 'preprocess')
 pico_source = find_files(pico_root, '.cxx') + find_files(pico_generated, '.cpp')
 pico_extension = Extension(
     "picoscenes", ["./picoscenes.pyx"] + pico_source,
