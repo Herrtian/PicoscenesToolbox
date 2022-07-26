@@ -59,6 +59,7 @@ cdef extern from "rxs_parsing_core/ModularPicoScenesFrame.hxx":
     cdef packed struct RxSBasic:
         uint16_t deviceType
         uint64_t tstamp
+        uint64_t systemTime
         int16_t centerFreq
         int16_t controlFreq
         uint16_t cbw
@@ -424,6 +425,7 @@ cdef parse_RxSBasic(const RxSBasic *m):
     return {
         "deviceType": m.deviceType,
         "timestamp": m.tstamp,
+        "systemns": m.systemTime,
         "centerFreq": m.centerFreq,
         "controlFreq": m.controlFreq,
         "CBW": m.cbw,
