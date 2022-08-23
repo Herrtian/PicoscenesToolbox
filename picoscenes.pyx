@@ -228,9 +228,12 @@ cdef extern from "rxs_parsing_core/ModularPicoScenesFrame.hxx":
 
     # MVMExtraSegment.hxx
     cdef cppclass IntelMVMParsedCSIHeader:
-        uint32_t ftmClock
-        uint32_t muClock
-        uint32_t rate_n_flags
+        # uint32_t ftmClock
+        # uint32_t muClock
+        # uint32_t rate_n_flags
+        uint32_t value56[9];
+        uint32_t rateNflag;
+        uint32_t value96[44];
 
     # MVMExtraSegment.hxx
     cdef cppclass IntelMVMExtrta:
@@ -543,11 +546,12 @@ cdef parse_CSI(const CSI *m):
     }
 
 cdef parse_IntelMVMParsedCSIHeader(const IntelMVMParsedCSIHeader *m):
-    return {
-        "FMTClock": m.ftmClock,
-        "usClock": m.muClock,
-        "RateNFlags": m.rate_n_flags,
+    result = {
+        "value56":[m.value56[i] for i in range(56)],
+        "rateNflag": m.rateNflag,
+        "value96": [m.value96[i] for i in range(96)] ,
     }
+    return result
 
 cdef parse_DpasRequestSegment(const DPASRequest m):
     return {
