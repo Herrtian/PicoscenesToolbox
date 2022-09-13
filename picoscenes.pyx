@@ -547,9 +547,9 @@ cdef parse_CSI(const CSI *m):
 
 cdef parse_IntelMVMParsedCSIHeader(const IntelMVMParsedCSIHeader *m):
     result = {
-        "value56":[m.value56[i] for i in range(56)],
+        "value56":[m.value56[i] for i in range(9)],
         "rateNflag": m.rateNflag,
-        "value96": [m.value96[i] for i in range(96)] ,
+        "value96": [m.value96[i] for i in range(44)] ,
     }
     return result
 
