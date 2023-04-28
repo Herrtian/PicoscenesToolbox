@@ -366,40 +366,6 @@ cdef class Picoscenes:
 cdef inline uint32_t cu32l(uint8_t a, uint8_t b, uint8_t c, uint8_t d):
     return a | (b << 8) | (c << 16) | (d << 24)
 
-#  This has been not used yet
-cdef class PicoFrames:
-    cdef public str file
-    cdef public list raw
-
-    def __cinit__(self, file, *argv, **kw):
-        self.file = file
-        self.raw = list()
-        self.get_frames()
-
-    def __init__(self, file, if_report=True):
-        pass
-
-    cpdef get_block(self, data: bytes, offset: int):
-        # When retrieving block bytes, adding the length indicator to total size reduces boilerplate.
-        length = struct.unpack("I", data[offset:offset + 4])[0] + 4
-        return length, data[offset:offset + length]
-
-    cpdef get_frames(self):
-        cpdef bytes file_bytes = open(self.file, 'rb').read()  # 打开二进制文件
-        cpdef long pos = 0
-        cdef optional[ModularPicoScenesRxFrame] frame
-
-        while pos < len(file_bytes):
-            frame_length, frame_bytes = self.get_block(file_bytes, pos)
-            if len(frame_bytes) != frame_length:
-                print("Reached end of file.")
-                break
-            # picoframe = PicoFrame()
-            frame = ModularPicoScenesRxFrame.fromBuffer(<unsigned char *> frame_bytes, frame_length - 4, True)
-            print(frame.has_value())
-
-            self.raw.append(parse(&frame))
-            pos += frame_length
 
 cdef parse_ieee80211_mac_frame_header(const ieee80211_mac_frame_header *m):
     cdef int i
