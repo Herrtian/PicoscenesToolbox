@@ -23,15 +23,15 @@ EXTENSIONS = []
 
 class Build(build_ext):
     def build_extensions(self):
-        if self.compiler.compiler_type in ['unix', 'mingw32']:
-            for e in self.extensions:
-                if e.name == "picoscenes":
-                    e.extra_compile_args = ['-std=c++2a', '-Wno-attributes',
-                                            '-O3']
         if self.compiler.compiler_type in ["msvc"]:
             for e in self.extensions:
                 if e.name == "picoscenes":
                     e.extra_compile_args = ['/std:c++latest']
+        else:
+            for e in self.extensions:
+                if e.name == "picoscenes":
+                    e.extra_compile_args = ['-std=c++2a', '-Wno-attributes',
+                                            '-O3']
         super(Build, self).build_extensions()
 
 
