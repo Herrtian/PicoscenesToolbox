@@ -4,7 +4,7 @@ The official Python toolbox for parsing the PicoScenes **.csi** files.
 
 ## Highlights
 
-- Support Linux and macOS
+- Support Linux, macOS and windows
 - Easy to use 
 - Faster parsing than the MATLAB implementation
 - High scalability
