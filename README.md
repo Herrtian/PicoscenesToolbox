@@ -10,7 +10,15 @@ The official Python toolbox for parsing the PicoScenes **.csi** files.
 - High scalability
 - The official toolbox for parsing .csi
 
+## Preparation steps on Windows 10 or 11
 
+1. Install [TDM-GCC-64](https://jmeubank.github.io/tdm-gcc/) (choose MinGW-w64 based version, version 10.3+);
+2. Set Compiler to MinGW64 using [mingw64ccompiler](https://github.com/imba-tjd/mingw64ccompiler)
+```bash
+pip install git+https://github.com/imba-tjd/mingw64ccompiler
+python -m mingw64ccompiler install_specs  # Run once
+python -m mingw64ccompiler install        # Works with venv
+```
 
 ## Install
 
