@@ -349,8 +349,6 @@ cdef class Picoscenes:
         free(buf)
         fclose(f)
         self.count = count
-        if self.if_report:
-            printf("%d packets parsed\n", count)
 
     cpdef pmsg(self, unsigned char *data):
         # This method hasn't been ready
