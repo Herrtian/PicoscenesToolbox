@@ -270,11 +270,11 @@ cdef extern from "rxs_parsing_core/ModularPicoScenesFrame.hxx":
         optional[PicoScenesFrameHeader] PicoScenesHeader
         optional[ExtraInfoSegment] txExtraInfoSegment
         # optional[DPASRequestSegment] dpasRequestSegment
-        optional[CSISegment] pilotCSISegment
+        # optional[CSISegment] pilotCSISegment
         optional[CSISegment] legacyCSISegment
         optional[BasebandSignalSegment] basebandSignalSegment
         optional[PreEQSymbolsSegment] preEQSymbolsSegment
-        vector[uint8_t] mpdu
+        vector[vector[uint8_t]] mpdus
 
         @ staticmethod
         optional[ModularPicoScenesRxFrame] fromBuffer(const uint8_t *buffer, uint32_t bufferLength, bint interpolateCSI)
@@ -562,8 +562,8 @@ cdef parse(optional[ModularPicoScenesRxFrame] *frame):
             data["PicoScenesHeader"] = parse_PicoScenesFrameHeader(&frame_value.PicoScenesHeader.value())
         if frame_value.txExtraInfoSegment.has_value():
             data["TxExtraInfo"] = parse_ExtraInfo(&frame_value.txExtraInfoSegment.value().getExtraInfo())
-        if frame_value.pilotCSISegment.has_value():
-            data["PilotCSI"] = parse_CSI(&frame_value.pilotCSISegment.value().getCSI())
+        # if frame_value.pilotCSISegment.has_value():
+        #     data["PilotCSI"] = parse_CSI(&frame_value.pilotCSISegment.value().getCSI())
         if frame_value.legacyCSISegment.has_value():
             data["LegacyCSI"] = parse_CSI(&frame_value.legacyCSISegment.value().getCSI())
 #        if frame_value.basebandSignalSegment.has_value():
@@ -574,7 +574,7 @@ cdef parse(optional[ModularPicoScenesRxFrame] *frame):
         #     data["DpasRequestSegment"] = parse_DpasRequestSegment(
         #         frame_value.dpasRequestSegment.value().getRequest())
 
-        data["MPDU"] = frame_value.mpdu
+        data["MPDUS"] = frame_value.mpdus
 
     # print(data)
     return data
