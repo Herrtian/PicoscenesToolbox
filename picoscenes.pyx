@@ -202,9 +202,9 @@ cdef extern from "rxs_parsing_core/ModularPicoScenesFrame.hxx":
         uint8_t antSel
         # int16_t subcarrierOffset
         vector[int16_t] subcarrierIndices
-        SignalMatrix[ccomplex[double]] CSIArray
-        SignalMatrix[double] magnitudeArray
-        SignalMatrix[double] phaseArray
+        SignalMatrix[ccomplex[float]] CSIArray
+        SignalMatrix[float] magnitudeArray
+        SignalMatrix[float] phaseArray
 
     # CSISegment.hxx
     cdef cppclass CSISegment:
@@ -255,11 +255,11 @@ cdef extern from "rxs_parsing_core/ModularPicoScenesFrame.hxx":
 
     # BasebandSignalSegment.hxx
     cdef cppclass BasebandSignalSegment:
-        const SignalMatrix[ccomplex[double]] & getSignalMatrix() const
+        const SignalMatrix[ccomplex[float]] & getSignalMatrix() const
 
     # PreEQSymbolsSegment.hxx
     cdef cppclass PreEQSymbolsSegment:
-        const SignalMatrix[ccomplex[double]] & getPreEqSymbols() const
+        const SignalMatrix[ccomplex[float]] & getPreEqSymbols() const
     # ModularPicoScenesFrame.hxx
     cdef cppclass ModularPicoScenesRxFrame:
         ieee80211_mac_frame_header standardHeader
@@ -541,7 +541,7 @@ cdef parse_PicoScenesFrameHeader(const PicoScenesFrameHeader *m):
         "TxId": m.txId,
     }
 
-cdef parse_SignalMatrix(const SignalMatrix[ccomplex[double]] *m):
+cdef parse_SignalMatrix(const SignalMatrix[ccomplex[float]] *m):
     return np.asarray(m.array).reshape(m.dimensions)
 
 cdef parse(optional[ModularPicoScenesRxFrame] *frame):
