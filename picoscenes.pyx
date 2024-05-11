@@ -3,12 +3,14 @@ import struct
 
 from libc.stdio cimport (fopen, fread, fclose, fseek, ftell, printf, FILE,
 SEEK_END, SEEK_SET, SEEK_CUR)
+from libcpp.memory cimport shared_ptr
 from libc.stdint cimport (uint8_t, uint16_t, uint32_t, uint64_t,
 int8_t, int16_t, int32_t, int64_t)
 from libc.stdlib cimport malloc, realloc, free
 from libcpp.string cimport string
 from libcpp.vector cimport vector
 from libcpp.complex cimport complex as ccomplex
+from cython.operator cimport dereference as deref
 
 import numpy as np
 
@@ -208,7 +210,7 @@ cdef extern from "rxs_parsing_core/ModularPicoScenesFrame.hxx":
 
     # CSISegment.hxx
     cdef cppclass CSISegment:
-        const CSI & getCSI() const
+        const shared_ptr[CSI] & getCSI() const
 
     # DPASRequestSegment.hxx
     # cdef packed struct DPASRequest:
@@ -263,17 +265,17 @@ cdef extern from "rxs_parsing_core/ModularPicoScenesFrame.hxx":
     # ModularPicoScenesFrame.hxx
     cdef cppclass ModularPicoScenesRxFrame:
         ieee80211_mac_frame_header standardHeader
-        RxSBasicSegment rxSBasicSegment
-        ExtraInfoSegment rxExtraInfoSegment
-        CSISegment csiSegment
-        optional[MVMExtraSegment] mvmExtraSegment
-        optional[PicoScenesFrameHeader] PicoScenesHeader
-        optional[ExtraInfoSegment] txExtraInfoSegment
+        shared_ptr[RxSBasicSegment] rxSBasicSegment
+        shared_ptr[ExtraInfoSegment] rxExtraInfoSegment
+        shared_ptr[CSISegment] csiSegment
+        shared_ptr[MVMExtraSegment] mvmExtraSegment
+        shared_ptr[PicoScenesFrameHeader] PicoScenesHeader
+        shared_ptr[ExtraInfoSegment] txExtraInfoSegment
         # optional[DPASRequestSegment] dpasRequestSegment
         # optional[CSISegment] pilotCSISegment
-        optional[CSISegment] legacyCSISegment
-        optional[BasebandSignalSegment] basebandSignalSegment
-        optional[PreEQSymbolsSegment] preEQSymbolsSegment
+        shared_ptr[CSISegment] legacyCSISegment
+        shared_ptr[BasebandSignalSegment] basebandSignalSegment
+        #optional[PreEQSymbolsSegment] preEQSymbolsSegment
         vector[vector[uint8_t]] mpdus
 
         @ staticmethod
@@ -551,28 +553,28 @@ cdef parse(optional[ModularPicoScenesRxFrame] *frame):
         frame_value = frame.value()
         data = {
             "StandardHeader": parse_ieee80211_mac_frame_header(&frame_value.standardHeader),
-            "RxSBasic": parse_RxSBasic(&frame_value.rxSBasicSegment.getBasic()),
-            "RxExtraInfo": parse_ExtraInfo(&frame_value.rxExtraInfoSegment.getExtraInfo()),
-            "CSI": parse_CSI(&frame_value.csiSegment.getCSI()),
+            "RxSBasic": parse_RxSBasic(&(deref(frame_value.rxSBasicSegment).getBasic())),
+            "RxExtraInfo": parse_ExtraInfo(&(deref(frame_value.rxExtraInfoSegment).getExtraInfo())),
+            "CSI": parse_CSI(&(deref(deref(frame_value.csiSegment).getCSI()))),
         }
-        if frame_value.mvmExtraSegment.has_value():
+        if frame_value.mvmExtraSegment:
             data["MVMExtra"] = parse_IntelMVMParsedCSIHeader(
-                &frame_value.mvmExtraSegment.value().getMvmExtra().parsedHeader)
-        if frame_value.PicoScenesHeader.has_value():
-            data["PicoScenesHeader"] = parse_PicoScenesFrameHeader(&frame_value.PicoScenesHeader.value())
-        if frame_value.txExtraInfoSegment.has_value():
-            data["TxExtraInfo"] = parse_ExtraInfo(&frame_value.txExtraInfoSegment.value().getExtraInfo())
-        # if frame_value.pilotCSISegment.has_value():
-        #     data["PilotCSI"] = parse_CSI(&frame_value.pilotCSISegment.value().getCSI())
-        if frame_value.legacyCSISegment.has_value():
-            data["LegacyCSI"] = parse_CSI(&frame_value.legacyCSISegment.value().getCSI())
-#        if frame_value.basebandSignalSegment.has_value():
-#            data["BasebandSignals"] = parse_SignalMatrix(&frame_value.basebandSignalSegment.value().getFloat32SignalMatrix())
-#        if frame_value.preEQSymbolsSegment.has_value():
-#            data["PreEQSymbols"] = parse_SignalMatrix(&frame_value.preEQSymbolsSegment.value().getPreEqSymbols())
-        # if frame_value.dpasRequestSegment.has_value():
+                &(deref(frame_value.mvmExtraSegment).getMvmExtra().parsedHeader))
+        if frame_value.PicoScenesHeader:
+            data["PicoScenesHeader"] = parse_PicoScenesFrameHeader(&(deref(frame_value.PicoScenesHeader)))
+        if frame_value.txExtraInfoSegment:
+            data["TxExtraInfo"] = parse_ExtraInfo(&(deref(frame_value.txExtraInfoSegment).getExtraInfo()))
+        # if frame_value.pilotCSISegment:
+        #     data["PilotCSI"] = parse_CSI(&(deref(deref(frame_value.pilotCSISegment).getCSI())))
+        if frame_value.legacyCSISegment:
+            data["LegacyCSI"] = parse_CSI(&(deref(deref(frame_value.legacyCSISegment).getCSI())))
+#        if frame_value.basebandSignalSegment:
+#            data["BasebandSignals"] = parse_SignalMatrix(&(deref(frame_value.basebandSignalSegment).getFloat32SignalMatrix()))
+#        if frame_value.preEQSymbolsSegment:
+#            data["PreEQSymbols"] = parse_SignalMatrix(&(deref(frame_value.preEQSymbolsSegment).getPreEqSymbols()))
+        # if frame_value.dpasRequestSegment:
         #     data["DpasRequestSegment"] = parse_DpasRequestSegment(
-        #         frame_value.dpasRequestSegment.value().getRequest())
+        #         deref(frame_value.dpasRequestSegment).getRequest())
 
         data["MPDUS"] = frame_value.mpdus
 
