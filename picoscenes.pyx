@@ -79,6 +79,11 @@ cdef extern from "rxs_parsing_core/ModularPicoScenesFrame.hxx":
         int8_t rssi_ctl0
         int8_t rssi_ctl1
         int8_t rssi_ctl2
+        int8_t rssi_ctl3
+        int8_t rssi_ctl4
+        int8_t rssi_ctl5
+        int8_t rssi_ctl6
+        int8_t rssi_ctl7
 
     # RxSBasicSegment.hxx
     cdef cppclass RxSBasicSegment:
@@ -410,6 +415,11 @@ cdef parse_RxSBasic(const RxSBasic *m):
         "rssi1": m.rssi_ctl0,
         "rssi2": m.rssi_ctl1,
         "rssi3": m.rssi_ctl2,
+        "rssi4": m.rssi_ctl3,
+        "rssi5": m.rssi_ctl4,
+        "rssi6": m.rssi_ctl5,
+        "rssi7": m.rssi_ctl6,
+        "rssi8": m.rssi_ctl7,
     }
 
 cdef parse_ExtraInfo(const ExtraInfo *m):
